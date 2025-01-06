@@ -1,0 +1,1 @@
+$env:NODE_OPTIONS = "--openssl-legacy-provider --dns-result-order=ipv4first"
