@@ -1,15 +1,16 @@
 // 현재 프로젝트에서 모듈 경로를 찾을 수 있도록 지정.
 // 특히 Windows에서 발생하는 오류 해결을 위한 코드.
 // 이 코드가 없어도 잘 동작하는 경우 필요치 않음.
-const _require = id => require(require.resolve(id, { paths: [require.main.path] }))
+//const _require = id => require(require.resolve(id, { paths: [require.main.path] }))
 
 // path: NodeJS에서 파일 및 디렉토리 경로 작업을 위한 전역 모듈
-const path = _require('path')
-const HtmlPlugin = _require('html-webpack-plugin')
-const CopyPlugin = _require('copy-webpack-plugin')
-const { VueLoaderPlugin } = _require('vue-loader')
+const path = require('path')
+const HtmlPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
+  mode: 'development', // 디버깅때문에 추가해봄
   resolve: {
     // 경로에서 확장자 생략 설정
     extensions: ['.js', '.vue'],
@@ -78,8 +79,11 @@ module.exports = {
         { from: 'static' }
       ]
     }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
   ],
+  devtool: 'source-map', // 소스 맵 활성화    
+  // eval-source-map: 빠른 빌드 속도와 적절한 디버깅 지원 제공.
+  // source-map: 최적의 디버깅 품질 제공(속도는 느림).
 
   // 개발 서버 옵션
   devServer: {

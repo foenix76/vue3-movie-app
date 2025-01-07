@@ -124,8 +124,24 @@ https://www.omdbapi.com/?i=tt3896198&apikey=blabla
 Emmet Live  
 .클래스명을 치면 div로 감싸진 태그가 완성됨. .container등 설정시 편리
 
+# 디버깅
+오늘 하루는 디버깅 방법 찾다가 시간을 꽤 허비함.  
+webpack.config.js에 devtool: 'source-map' 추가하고 크롬 개발자도구의 Sources > Page > webpack-basic탭 하위의 .vue파일에 브레이크 포인트를 걸 수 있었다.  
+단, 같은 이름들의 파일이 많은데 맨 마지막 파일에 보면 js소스가 들어있음.  
+
+Vue CLI 3이상인 경우 vue.config.js에 다음과 같이 해도 된다고 함
+```js
+module.exports = {
+  configureWebpack: {
+    devtool: 'source-map'
+  }
+}
+```
+vue2나 angular5때처럼 vscode상에서 딱 걸려주면 좋겠는데 일단은 넘어가자.
+
 # 후기
-진행중...
+08. Search - 버튼 구현에서 API날리고 응답 오는 부분까지 확인함.
+디버깅 설정 추가
 
 # Vue3 템플릿 with Webpack
 

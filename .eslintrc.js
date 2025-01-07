@@ -1,15 +1,4 @@
 module.exports = {
-  // 확장자 생략된 파일의 ~경로 추적을 못해 추가해봤으나 소용없음
-  /*
-  settings: {
-    'import/resolver': {
-      alias: {
-        map: [['~', './src']],
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue']
-      }
-    }
-  },
-  */
   // 사전에 정의된 전역 변수 설정
   env: {
     browser: true,
@@ -20,7 +9,7 @@ module.exports = {
     // 'plugin:vue/vue3-essential', // Lv1
     'plugin:vue/vue3-strongly-recommended', // Lv2
     // 'plugin:vue/vue3-recommended', // Lv3
-    'eslint:recommended'
+    'eslint:recommended' // 이 옵션 사용시 no-debugger : error됨. 아래는 켜줘봄
   ],
   // 구문 분석할 패키지 설정(Babel, ES6^ => ES5)
   parserOptions: {
@@ -41,6 +30,7 @@ module.exports = {
       singleline: 'never',
       multiline: 'never'
     }]
+    , 'no-debugger': 'off' // off, warn, error
   }
 }
 
