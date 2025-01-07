@@ -107,10 +107,22 @@ npm update
 npm install
 ```
 
+# 인증키 문제
+https://www.omdbapi.com/apikey.aspx에서 1일 1000회 호출 가능한 API키 발급하였음  
+이메일로 인증링크 클릭시 Your key is now activated! 출력되었으나 아래 테스트링크 클릭시 Invalid API key!  
+https://www.omdbapi.com/?i=tt3896198&apikey=blabla  
+시간차를 두고 작동하거나 실제 API호출 시 작동할 수도 있으므로 일단 진도 ㄱㄱ (강사분 키는 정상작동함)
+```json
+{"Response":"False","Error":"Invalid API key!"}
+```
+어라? gmail말고 naver로 인증하니 정상 발급이 됬음
+```json
+{"Title":"Guardians of the Galaxy Vol. 2","Year":"2017","Rated":"PG-13","Released":"05 May 2017","Runtime":"136 min","Genre":"Action, Adventure, Comedy","Director":"James Gunn","Writer":"James Gunn, Dan Abnett, Andy Lanning","Actors":"Chris Pratt, Zoe Saldana, Dave Bautista","Plot":"The Guardians struggle to keep together as a team while dealing with their personal family issues, notably Star-Lord's encounter with his father, the ambitious celestial being Ego.","Language":"English","Country":"United States","Awards":"Nominated for 1 Oscar. 15 wins & 60 nominations total","Poster":"https://m.media-amazon.com/images/M/MV5BNWE5MGI3MDctMmU5Ni00YzI2LWEzMTQtZGIyZDA5MzQzNDBhXkEyXkFqcGc@._V1_SX300.jpg","Ratings":[{"Source":"Internet Movie Database","Value":"7.6/10"},{"Source":"Rotten Tomatoes","Value":"85%"},{"Source":"Metacritic","Value":"67/100"}],"Metascore":"67","imdbRating":"7.6","imdbVotes":"780,354","imdbID":"tt3896198","Type":"movie","DVD":"N/A","BoxOffice":"$389,813,101","Production":"N/A","Website":"N/A","Response":"True"}
+```
+
 # 유용한 vscode 플러그인
 Emmet Live  
 .클래스명을 치면 div로 감싸진 태그가 완성됨. .container등 설정시 편리
-
 
 # 후기
 진행중...

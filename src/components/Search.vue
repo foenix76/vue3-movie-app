@@ -3,8 +3,9 @@
     <input
       v-model="title"
       class="form-control"
+      type="text"
       placeholder="영화 또는 시리즈 검색 & 그외 기타 등등"
-      type="text" />
+      @keyup.enter="apply" />
 
     <div class="selects">
       <select
@@ -24,6 +25,12 @@
         </option>
       </select>
     </div>
+
+    <button
+      class="btn btn-primary"
+      @click="apply">
+      Apply
+    </button>
   </div>
 </template>
 
@@ -59,7 +66,12 @@ export default {
         },
       ]
     }
-  }  
+  },
+  methods: {
+    apply() {
+      // Search Movies
+    }
+  }
 }
 </script>
 
@@ -82,6 +94,12 @@ export default {
         margin-right: 0;
       }
     }
+  }
+  .btn {
+    width: 120px;
+    height: 50px;
+    font-weight: 700;
+    flex-shrink: 0; /** 감소 방지 */
   }
 }
 
