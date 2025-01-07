@@ -137,7 +137,29 @@ module.exports = {
   }
 }
 ```
-vue2나 angular5때처럼 vscode상에서 딱 걸려주면 좋겠는데 일단은 넘어가자.
+vue2나 angular5때처럼 vscode상에서 bp가 딱 걸려주면 좋겠는데 일단은 넘어가자.
+
+해결됨 : webpack에 devtool: 'source-map' 추가하고 launch.json에서 다음과 같이 webRoot와 sourceMap경로설정을 해주니 드디어 vscode에서도 브레이킹 포인트가 먹는다.  
+
+launch.json
+```
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Vue.js App Debug",
+      "url": "http://localhost:8080", // webpack-dev-server 주소
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
+    }
+  ]
+}
+
+```
 
 # 후기
 08. Search - 버튼 구현에서 API날리고 응답 오는 부분까지 확인함.

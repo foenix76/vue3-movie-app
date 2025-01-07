@@ -81,7 +81,7 @@ module.exports = {
     }),
     new VueLoaderPlugin(),
   ],
-  devtool: 'source-map', // 소스 맵 활성화    
+  devtool: 'source-map',
   // eval-source-map: 빠른 빌드 속도와 적절한 디버깅 지원 제공.
   // source-map: 최적의 디버깅 품질 제공(속도는 느림).
 
