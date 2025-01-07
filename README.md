@@ -37,9 +37,83 @@ NODE_OPTIONS                   --openssl-legacy-provider
 부트스트랩 의존성 설치 ( 강의 "bootstrap": "^5.0.0-beta3", 현시점 "bootstrap": "^5.3.3")
 npm i bootstrap
 
+# SCSS에서 언더스코어(_)의 의미
+부트스트랩 참조를 위해 main.scss설정중 궁금한점 발생!  
+실제 해당 경로를 가보면 _functions.scss, _variables.scss, _mixins.scss파일이 있는데 어떻게 파일명이 다른데 참조할 수가 있는것일까?  
+```scss
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+```
+언더스코어로 시작하는 SCSS 파일은 **"partial 파일"**이라고 불립니다.  
+이 파일들은 독립적으로 컴파일되지 않고, 다른 SCSS 파일에서 @import 또는 @use로 불러와 사용됩니다.  
+SCSS는 언더스코어를 사용하는 파일 이름을 불러올 때, 파일명을 언더스코어 없이 참조할 수 있도록 설계되어 있습니다. 아항!
+
+# ~/를 포함한 경로 파일을 vscode에서 ctrl+클릭으로 추적하는 문제
+
+확장자를 생략한 .scss, .vue파일의 경우 ../경로로는 추적이 되나 ~/를 포함한 경로로는 추적불가  
+ctrl+click으로 추적하려면 확장자를 생략하면 안되는데 그 이유는 webpack설정과 vscode의 룰 차이 때문이라고 함  
+
+구글링 및 GPT의 답변대로 아래와 같은 조치를 취해봄  
+프로젝트 유형에 따라 jsconfig.json 또는 tsconfig.json안에 아래 내용 작성
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"]
+    }
+  }
+}
+
+```
+그러나 아래처럼 확장자 없이는 scss던 vue던 추적안됨  
+@import "~/scss/main"; 추적 불가  
+@import "../scss/main"; 추적 가능
+  
+vue의 경우 ../던 ~/던 경로 무관하게 확장자 없으면 추적안됨  
+import Logo from '~/components/Logo.vue'; 추적 가능  
+import Logo from '~/components/Logo'; 추적 불가
+
+**결론**  
+scss파일은 ../경로로 확장자 없이 사용  
+vue파일은 ~/경로로 확장자 붙혀 사용  
+현재는 코드를 직접 짜면서 추적하고 있으므로 분석속도에서 시간을 벌려면 보이는 임포트 구문 마다 .vue를 붙혀줘야 할 것 같음.
+
+그러나 이러면 너무 불편할 것 같은데.. 일단 각종 라이브러리의 버전 차이가 의심가므로 원래 예제를 확인해보니 마찬가지.  
+프론트 실무전문가 레벨이 되면 ctrl+click이 전혀 필요없을 정도로 빨라서 이런 고민이 의미가 없을 것으로 보임.  
+ctrl+P파일명으로 바로 찾아가도 충분할 듯.
+
+어쨋든 원래 예제를 빌드해보니 실행이 잘 안되는데 강의공지사항을 간과한게 문제였음.  
+package.json, package-lock.json을 받아서 사용하라는 내용이 공지되있음    
+https://www.youtube.com/watch?v=5L9Ugz9eYxI  
+
+강사님 원본도 실행이 안되어서 당황하던중 아래와 같이 npm audit fix, npm udate, npm install, npm run dev를 하니 실행이 가능했다.  
+vue3-movie-app default브랜치는 실행이 잘 됬고 master는 netlify설정이 필요한지 안됨. 차후 체크해볼 것   
+```bash
+# 패키지 의존성 확인 및 업그레이드
+# 취약점 분석 및 수정:
+npm audit fix
+# 실패시 가이드에 따라 아래와 같이 나오는 경우가 있음. peerDependencies 충돌을 무시하고, 설치 또는 업데이트 강제 진행.
+# 기능이 동작하지 않을 확률이 있으므로 주의 (보안이 우선이거나, 프로젝트가 구버전 의존성에 기반한 경우, 테스트 또는 임시 조치가 필요한 경우)
+# npm audit fix  --legacy-peer-deps
+
+# 호환 가능한 package.json 또는 package-lock.json에 정의된 버전 범위(semver 기준)에 따라 최신 호환 가능한 버전으로 패키지를 업데이트
+npm update
+
+# 패키지 잠금 파일(package-lock.json) 삭제 후 재설치:, 나는 하지 않음
+# rm -rf node_modules package-lock.json
+
+npm install
+```
+
+# 유용한 vscode 플러그인
+Emmet Live  
+.클래스명을 치면 div로 감싸진 태그가 완성됨. .container등 설정시 편리
+
 
 # 후기
-진행중 : 03. Bootstrap부터 진행예정
+진행중...
 
 # Vue3 템플릿 with Webpack
 

@@ -1,4 +1,15 @@
 module.exports = {
+  // 확장자 생략된 파일의 ~경로 추적을 못해 추가해봤으나 소용없음
+  /*
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [['~', './src']],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue']
+      }
+    }
+  },
+  */
   // 사전에 정의된 전역 변수 설정
   env: {
     browser: true,
@@ -32,3 +43,4 @@ module.exports = {
     }]
   }
 }
+
