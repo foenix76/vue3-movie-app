@@ -34,6 +34,9 @@ NODE_OPTIONS                   --openssl-legacy-provider
 <i> [webpack-dev-server] Project is running at http://127.0.0.1:8080/
 ```
 
+부트스트랩 의존성 설치 ( 강의 "bootstrap": "^5.0.0-beta3", 현시점 "bootstrap": "^5.3.3")
+npm i bootstrap
+
 
 # 후기
 진행중 : 03. Bootstrap부터 진행예정
