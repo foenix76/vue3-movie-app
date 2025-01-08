@@ -28,10 +28,10 @@ export default {
 @import "~/scss/main";
 
 .movie {
-  $width: 168px;
+  $width: 250px;
   width: $width;
   height: $width * 3 / 2;
-  margin: 10px;
+  margin: 8px;
   border-radius: 4px;
   background-color: $gray-400;
   background-size: cover;
