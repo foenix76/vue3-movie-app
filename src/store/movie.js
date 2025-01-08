@@ -7,7 +7,8 @@ export default {
   state: () => ({
     movies: [],
     message: 'Search for the movie title!',
-    loading: false
+    loading: false,
+    theMovie: {}
   }),
   getters: {
   },
@@ -27,7 +28,7 @@ export default {
     async searchMovies({ commit, state }, payload) {
 
       // 중복 서브밋 방지
-      if(state.loading) return;      
+      if(state.loading) return;
 
       commit('updateState', {
         message: '',
@@ -76,6 +77,30 @@ export default {
           loading: false
         })        
       }
+    },
+    async searchMovieWithId({commit, state}, payload ) {
+      // 중복 서브밋 방지
+      if(state.loading) return;
+
+      commit('updateState', {
+        loading: true,
+        theMovie: {} // 직전 검색 영화정보 삭제
+      })    
+
+      try {
+        const res = await _fetchMovie(payload);
+        commit('updateState', {
+          theMovie: res.data
+        })          
+      } catch (error) {
+        commit('updateState', {
+          theMovie: {}
+        })          
+      } finally {
+        commit('updateState', {
+          loading: false
+        })    
+      }      
     }
   }
 }
@@ -83,10 +108,12 @@ export default {
 // promise객체를 사용할 때 async, await을 사용할 수 있으면 편리
 // 사용할 수 없다면 .then(), catch() 사용. then안에서 다음 실행할 펑션을 return시키면 
 
+const OMDB_API_KEY = 'cb61e2fe' // 7035c60c
 function _fetchMovie(payload) {
-  const { title, type, year, page } = payload
-  const OMDB_API_KEY = 'cb61e2fe' // 7035c60c
-  const url = `http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
+  const { title, type, year, page, id } = payload
+  const url = id
+  ? `http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`
+  : `http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
   
   return new Promise((resolve, reject) => {
     axios.get(url)
@@ -101,3 +128,47 @@ function _fetchMovie(payload) {
       })
   })
 }
+
+
+/** 영화 상세보가 Json Example
+ {
+  "Title": "The Color Purple",
+  "Year": "1985",
+  "Rated": "PG-13",
+  "Released": "07 Feb 1986",
+  "Runtime": "154 min",
+  "Genre": "Drama",
+  "Director": "Steven Spielberg",
+  "Writer": "Menno Meyjes, Alice Walker",
+  "Actors": "Danny Glover, Whoopi Goldberg, Oprah Winfrey",
+  "Plot": "A tale spanning forty years in the life of Celie, an African-American woman living in the South who survives incredible abuse and bigotry.",
+  "Language": "English",
+  "Country": "United States",
+  "Awards": "Nominated for 11 Oscars. 14 wins & 25 nominations total",
+  "Poster": "https://m.media-amazon.com/images/M/MV5BM2MyZjBlMGItNThkMi00YWExLThlZmUtZmI2MGM3YWE3YTY1XkEyXkFqcGc@._V1_SX300.jpg",
+  "Ratings": [
+    {
+      "Source": "Internet Movie Database",
+      "Value": "7.7/10"
+    },
+    {
+      "Source": "Rotten Tomatoes",
+      "Value": "73%"
+    },
+    {
+      "Source": "Metacritic",
+      "Value": "78/100"
+    }
+  ],
+  "Metascore": "78",
+  "imdbRating": "7.7",
+  "imdbVotes": "99,258",
+  "imdbID": "tt0088939",
+  "Type": "movie",
+  "DVD": "N/A",
+  "BoxOffice": "$98,467,863",
+  "Production": "N/A",
+  "Website": "N/A",
+  "Response": "True"
+}
+ */

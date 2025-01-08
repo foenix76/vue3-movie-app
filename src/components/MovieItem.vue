@@ -1,7 +1,8 @@
 <template>
   <div
     :style="{backgroundImage: `url(${movie.Poster})`}"
-    class="movie">
+    class="movie"
+    @click="searchMovieWithId">
     <div class="info">
       <div class="year">
         {{ movie.Year }}
@@ -19,6 +20,13 @@ export default {
     movie: {
       type: Object,
       default: () => ({})
+    }
+  },
+  methods: {
+    async searchMovieWithId() {      
+      this.$store.dispatch('movie/searchMovieWithId', {
+        id: this.movie.imdbID
+      })
     }
   }
 }

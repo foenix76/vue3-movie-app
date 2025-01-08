@@ -69,7 +69,7 @@ export default {
   },
   methods: {    
     async apply() {      
-      // 기존 로직은 vuex스토어인 movie.js오 옮기고 해당 로직을 호출하게 함
+      // 기존 로직은 vuex스토어인 movie.js로 옮기고 해당 로직을 호출하게 함
       this.$store.dispatch('movie/searchMovies', {
         title: this.title,
         type: this.type,
