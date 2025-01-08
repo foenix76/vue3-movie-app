@@ -45,7 +45,7 @@ npm i bootstrap
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
 ```
-언더스코어로 시작하는 SCSS 파일은 **"partial 파일"**이라고 불립니다.  
+언더스코어로 시작하는 SCSS 파일은 **partial파일**이라고 불립니다.  
 이 파일들은 독립적으로 컴파일되지 않고, 다른 SCSS 파일에서 @import 또는 @use로 불러와 사용됩니다.  
 SCSS는 언더스코어를 사용하는 파일 이름을 불러올 때, 파일명을 언더스코어 없이 참조할 수 있도록 설계되어 있습니다. 아항!
 
@@ -139,10 +139,17 @@ module.exports = {
 ```
 vue2나 angular5때처럼 vscode상에서 bp가 딱 걸려주면 좋겠는데 일단은 넘어가자.
 
-해결됨 : webpack에 devtool: 'source-map' 추가하고 launch.json에서 다음과 같이 webRoot와 sourceMap경로설정을 해주니 드디어 vscode에서도 브레이킹 포인트가 먹는다.  
+일부 해결됨 : webpack에 devtool: 'source-map' 추가하고 launch.json에서 다음과 같이 webRoot와 sourceMap경로설정을 해주니 드디어 vscode에서도 브레이킹 포인트가 먹는다.  
+그러나 vscode상 소스파일에 걸리는 것은 아니고 크롬 Source > Page > webpack-basic > src 폴더 하위의 소스에 브레이크 포인트를 걸면 해당 파일이 vscode에서 팝업되면서 이때부터 vscode상에서도 걸린다.  
 
-launch.json
-```
+예를 들자면 vscode상 경로 src\components\Search.vue 인 소스에 브레이크 포인트를 걸고 싶으면 크롬 Source > Page > webpack-basic 으로 가서 src\components\Search.vue(이상하게도 같은 이름의 파일이 여러개 있음)에 브레이크 포인트를 걸고 진행하면 포인트에 걸리는 순간 vscode에서 C:\project\src\webpack:\webpack-basic\src\components\Search.vue라는 가상경로의 파일이 열리면서 이후부터는 해당 파일에 데고 브레이크 포인트를 걸 수 있다.  
+(요즘 개발 환경이 어떤 환경인데.. 이렇게 불편할 리가 없는데.. 제대로 된 설정은 아닌 것 같지만 되는게 어디냐.. 일단 고!)
+
+```js
+# webpack.config.js
+devtool: 'source-map', // 추가
+
+# launch.json
 {
   "version": "0.2.0",
   "configurations": [
@@ -153,13 +160,19 @@ launch.json
       "url": "http://localhost:8080", // webpack-dev-server 주소
       "webRoot": "${workspaceFolder}/src",
       "sourceMapPathOverrides": {
-        "webpack:///src/*": "${webRoot}/*"
+        "webpack:///./src/*": "${webRoot}/*"
       }
     }
   ]
 }
 
 ```
+# Search 및 MovieList 구현시 데이터 전달
+부모와 자식요소간 데이터 전달 : props, emit  
+상위 컴포넌트와 하위 컴포넌트간 데이터 전달(중간 컴포넌트 패스 가능) : provide, inject  
+
+Search에서 MovieList, MovieItem까지 데이터를 전달하려면 Search의 부모인 Home에 props로 데이터를 올려줬다 다시 내려줘야 하는 것이 불편함  
+구애받지 않고 전달하기 위해 스토어 라이브러리인 vuex(뷰엑스)를 사용한다  
 
 # 후기
 08. Search - 버튼 구현에서 API날리고 응답 오는 부분까지 확인함.

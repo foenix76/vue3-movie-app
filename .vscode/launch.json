@@ -4,11 +4,11 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Vue.js App Debug",
-      "url": "http://localhost:8080", // webpack-dev-server 주소
+      "name": "Vue.js App Debug2",
+      "url": "http://localhost:8080", // webpack-dev-server 주소      
       "webRoot": "${workspaceFolder}/src",
-      "sourceMapPathOverrides": {
-        "webpack:///src/*": "${webRoot}/*"
+      "sourceMapPathOverrides": {        
+        "webpack:///./src/*": "${webRoot}/*"
       }
     }
   ]

@@ -1,17 +1,19 @@
 <template>
   <Headline />
   <Search />
+  <MovieList />
 </template>
 
 <script>
 import Headline from '~/components/Headline'
-import Search from '~/components/Search'
+import Search from '~/components/Search.vue'
+import MovieList from '~/components/MovieList.vue';
 
 export default {
-  // component로 s하나 빼먹어서 30분 넘게 잡아먹음 T^T
   components: {
     Headline,
-    Search
+    Search,
+    MovieList
   }
 }
 </script>

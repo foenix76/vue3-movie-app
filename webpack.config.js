@@ -10,7 +10,7 @@ const CopyPlugin = require('copy-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
-  mode: 'development', // 디버깅때문에 추가해봄
+  mode: 'development',
   resolve: {
     // 경로에서 확장자 생략 설정
     extensions: ['.js', '.vue'],
@@ -79,10 +79,10 @@ module.exports = {
         { from: 'static' }
       ]
     }),
-    new VueLoaderPlugin(),
+    new VueLoaderPlugin()
   ],
   devtool: 'source-map',
-  // eval-source-map: 빠른 빌드 속도와 적절한 디버깅 지원 제공.
+  // eval-source-map: 빠른 빌드 속도와 적절한 디버깅 지원 제공. - 현재 셋팅에서는 webpack-basic 하위에 BP를 찍을 수 없는 형태로 나옴
   // source-map: 최적의 디버깅 품질 제공(속도는 느림).
 
   // 개발 서버 옵션

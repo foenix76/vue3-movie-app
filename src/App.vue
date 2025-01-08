@@ -10,9 +10,7 @@ export default {
   components: {
     Header
   },
-  created() {
-    console.log('이 소스 맞냐?');
-  }
+  created() {}
 }
 </script>
 
