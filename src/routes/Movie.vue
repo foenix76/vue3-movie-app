@@ -34,8 +34,20 @@
         <div class="plot">
           {{ theMovie.Plot }}
         </div>
-        <div class="raings">
+        <div class="ratings">
           <h3>Ratings</h3>
+          <div class="rating-wrap">
+            <div
+              v-for="{ Source: name, Value: score } in theMovie.Ratings"
+              :key="name"
+              :title="name"
+              class="rating">
+              <img
+                :src="`/public/images/ratings/${name}.png`"
+                :alt="name" />
+              <span>{{ score }}</span>
+            </div>
+          </div>
         </div>
         <div>
           <h3>Actors</h3>
@@ -78,7 +90,7 @@ export default {
     this.$store.dispatch('movie/searchMovieWithId', {
       id: this.$route.params.id
     })
-  }
+  } 
 }
 </script>
 
@@ -162,6 +174,19 @@ export default {
       margin-top: 20px;
     }
     .ratings {
+      .rating-wrap {
+        display: flex;
+        .rating {
+          display: flex;
+          align-items: cemter;
+          margin-right: 32px;
+          img {
+            height: 30px;
+            flex-shrink: 0;
+            margin-right: 6px;
+          }
+        }
+      }
 
     }
     h3 {
