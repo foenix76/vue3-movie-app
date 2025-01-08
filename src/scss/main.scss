@@ -3,6 +3,14 @@ $primary: #FDC000;
 
 // 커스터마징 하고 싶은 변경하고 싶은 변수가 어디있는지 확인하고 그 앞(Required보다 먼저)에서 설정하면 됨
 
+$container-max-widths: (
+  sm: 540px,
+  md: 704px,
+  lg: 924px,
+  xl: 1140px,
+  xxl: 1364px
+);
+
 // Required
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
