@@ -1,4 +1,5 @@
 import axios from 'axios'
+import _uniqBy from 'lodash/uniqBy'
 
 export default {
   // namespaced는 module로서 사용할 수 있다는 의미
@@ -30,7 +31,8 @@ export default {
       const { Search, totalResults } = res.data
       // 여기의 commit은 context를 구조분해 { commit } 로 가져온 것임
       commit('updateState', {
-        movies: Search
+        // _uniqBy로 imdbID값 중복제거
+        movies: _uniqBy(Search, 'imdbID')
       })
 
       // 페이지 블록 만큼 추가 요청 처리
@@ -45,7 +47,7 @@ export default {
           const { Search } = res.data
           // 여기의 commit은 context를 구조분해 { commit } 로 가져온 것임
           commit('updateState', {
-            movies: [...state.movies, ...Search]
+            movies: [...state.movies, ..._uniqBy(Search, 'imdbID')]
           })
         }
       }
