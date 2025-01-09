@@ -76,6 +76,8 @@
 
 <script>
 import Loader from '~/components/Loader.vue';
+import { mapState } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -87,20 +89,26 @@ export default {
     Loader
   },
   computed: {
-    theMovie() {
-      return this.$store.state.movie.theMovie
-    },
-    loading() {
-      return this.$store.state.movie.loading
-    }
+    ...mapState('movie', [
+      'theMovie',
+      'loading'
+    ])
   },
   created() {
     console.log(this.$route);
-    this.$store.dispatch('movie/searchMovieWithId', {
+    // mapActions를 이용하여 액션을 가져와서 메서드에 등록하여 사용
+    // 그러나 코드만 보고는 $store의 액션이라는 것을 알 수 없기 때문에 dispatch를 쓰는게 더 나은 선택일 수 있다.
+    // (강의에서는 mapActions는 삭제하여 원복함)
+    // 헬퍼는 가능하면 반복적인 코드입력을 줄여주는 state등록에 사용하는것이 좋은 것 같음
+    //this.$store.dispatch('movie/searchMovieWithId', {
+    this.searchMovieWithId({
       id: this.$route.params.id
     })
   },
   methods: {
+    ...mapActions('movie', [
+      'searchMovieWithId'
+    ]),
     requestDiffSizeImage(url, size = 1000) {
       if (!url || url === 'N/A') {
         this.imageLoading = false

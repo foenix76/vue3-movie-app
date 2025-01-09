@@ -22,6 +22,7 @@
 
 <script>
 import Loader from '~/components/Loader.vue';
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -32,19 +33,16 @@ export default {
       imageLoading: true
     }
   },
+  /**
+   * computed: mapState 형태로도 사용가능하지만 computed안에서 다른 변수도 사용할 수 있으므로 전개연산자...으로 할당하는것을 추천
+   */
   computed: {
-    image() {
-      return this.$store.state.about.image
-    },
-    name() {
-      return this.$store.state.about.name
-    },    
-    email() {
-      return this.$store.state.about.email
-    },    
-    blog() {
-      return this.$store.state.about.blog
-    },        
+    ...mapState('about', [
+      'image',
+      'name',
+      'email',
+      'blog'
+    ])        
   },
   mounted() {
     this.init()

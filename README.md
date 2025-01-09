@@ -174,6 +174,42 @@ devtool: 'source-map', // 추가
 Search에서 MovieList, MovieItem까지 데이터를 전달하려면 Search의 부모인 Home에 props로 데이터를 올려줬다 다시 내려줘야 하는 것이 불편함  
 구애받지 않고 전달하기 위해 스토어 라이브러리인 vuex(뷰엑스)를 사용한다  
 
+# computed안에 ...mapState등의 vuex헬퍼로 가져온 값은
+methods안에서 this로 접근이 가능하다. (아까 이거 몰라서 fatch - commit - mutation으로 삽질함)
+
+# vuex 정리
+다양한 계층간에 props, emit, provide, inject로 일일이 데이터를 전달하기는 어려움  
+그래서 스토어라는 저장공간을 마련하고 데이터를 관리하며 어느 컴포넌트에서든 가져다 쓸 수 있게 해주는 라이브러리가 vuex.  
+vuex 스토어에는 다음의 5가지 옵션이 존재 (괄호 안은 컴포넌트 대비 유사 속성 표시)  
+
+namespaced : 모듈간 충돌방지를 위한 옵션  
+state (data) : 데이터, mutations를 통해서 조작가능  
+getters (computed) : state를 가져와 computed처럼 가공하여 사용가능.  
+mutations (methods) : state를 변경할 수 있는 권한이 있어 속성 변경 용도로 사용   
+actions (methods, 비동기) : state, getters, mutations도 가져와 사용가능. 비동기 지원 용도  
+
+액션을 사용할 때 첫번째 인수로 context를 사용 가능. 이걸 구조분해하면..  
+context.state : state   
+context.getters : getters  
+context.commit : mutations 호출  
+context.dispatch : actions 호출  
+
+# Vue컴포넌트에서 호출시
+state : this.$store.state.모듈.상태  
+getters : this.$store.getters['모듈/게터']  
+mutations : this.$store.commit('모듈/변이')  
+actions : this.$store.dispatch('모듈/액션')  
+
+state, getters는 computed에, mutations와 actions는 methods에 등록
+
+# vuex 헬퍼 (그러나 ...mapState만 주로 사용한다고 함)
+state : ...mapState('모듈', {'상태1', '상태2'})  
+getters : ...mapGetter('모듈', {'게터1', '게터2'})  
+mutations : ...mapMutations('모듈', {'변이1', '변이2'})  
+actions : ...mapActions('모듈', {'액션1', '액션2'})  
+
+state, getters는 computed에, mutations와 actions는 methods에 등록
+
 # 후기
 08. Search - 버튼 구현에서 API날리고 응답 오는 부분까지 확인함.
 디버깅 설정 추가
