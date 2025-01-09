@@ -102,6 +102,11 @@ export default {
   },
   methods: {
     requestDiffSizeImage(url, size = 1000) {
+      if (!url || url === 'N/A') {
+        this.imageLoading = false;
+        return '' // 이미지 없을 시 undefined 대신 빈 문자열 지정
+      }
+            
       const src = url.replace('SX300', `SX${size}`)      
       this.$loadImage(src)
       .then(() => {
