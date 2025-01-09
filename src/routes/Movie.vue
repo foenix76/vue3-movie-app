@@ -21,7 +21,11 @@
       class="movie-details">
       <div
         :style="{ backgroundImage: `url(${requestDiffSizeImage(theMovie.Poster)})` }"
-        class="poster"></div>
+        class="poster">
+        <Loader
+          v-if="imageLoading"
+          absolute />
+      </div>
       <div class="specs">
         <div class="title">
           {{ theMovie.Title }}
@@ -74,6 +78,11 @@
 import Loader from '~/components/Loader.vue';
 
 export default {
+  data() {
+    return {
+      imageLoading: true // 로딩중 표시
+    }
+  },
   components : {
     Loader
   },
@@ -93,7 +102,12 @@ export default {
   },
   methods: {
     requestDiffSizeImage(url, size = 1000) {
-      return url.replace('SX300', `SX${size}`)
+      const src = url.replace('SX300', `SX${size}`)      
+      this.$loadImage(src)
+      .then(() => {
+        this.imageLoading = false
+      })
+      return src
     }
   } 
 }
@@ -152,6 +166,7 @@ export default {
     background-color: $gray-200;
     background-size: cover;
     background-position: center;
+    position: relative;
 
   }
   .specs {

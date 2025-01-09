@@ -109,7 +109,7 @@ export default {
 // 사용할 수 없다면 .then(), catch() 사용. then안에서 다음 실행할 펑션을 return시키면 
 
 const OMDB_API_KEY = 'cb61e2fe' // 7035c60c
-function _fetchMovie(payload) {
+function _fetchMovie(payload) {  
   const { title, type, year, page, id } = payload
   const url = id
   ? `http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`
@@ -129,6 +129,7 @@ function _fetchMovie(payload) {
   })
 }
 
+// 외부 컴포넌트에서는 스토어의 액션을 디스패치로 호출하고 스토어의 액션은 뮤테이션을 호출하여 데이터를 바꾼다.
 
 /** 영화 상세보가 Json Example
  {
