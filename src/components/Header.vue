@@ -16,6 +16,26 @@
         </RouterLink>
       </div>
     </div>
+    <!-- 
+    이동방법 1 RouterLink to속성 이용
+    <RouterLink
+      to="/about"
+      class="user">
+      <img
+        :src="image"
+        :alt="name" />        
+    </RouterLink>    
+    -->
+    <!-- 
+    이동방법 2 @click + method 이용
+    -->
+    <div
+      class="user"
+      @click="toAbout">
+      <img
+        :src="image"
+        :alt="name" />              
+    </div>
   </header>
 </template>
 <script>
@@ -44,13 +64,25 @@ export default {
       ]
     }
   },
+  computed: {
+    image() {
+      return this.$store.state.about.image
+
+    },
+    name() {
+      return this.$store.state.about.name
+    }
+  },
   methods: {
     isMatch(path) {
       if (!path) return false
       console.log(this.$route)
       return path.test(this.$route.fullPath)
-    }
-  }
+    },
+    toAbout() {
+    this.$router.push('/about')
+  }    
+  },
 }
 </script>
 
@@ -60,8 +92,43 @@ header {
   padding: 0 40px;
   display: flex;
   align-items: center;
+  position: relative;
   .logo {
     margin-right: 40px;
+  }
+  .user {
+    width: 40px;
+    height: 40px;
+    //padding: 6px;
+    border-radius: 50%;
+    border: 3px solid $gray-200;
+    box-sizing: border-box;
+    background-color: $gray-200;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 40px;
+    margin: auto;
+    overflow: hidden;
+    display: inline-block;    
+    transition: .4s;
+    &:hover {
+      // background-color: darken($gray-200, 10%);
+      filter: brightness(0.8); /* 밝기를 50%로 줄임 */
+      transition: 0.3s ease; /* 부드러운 전환 효과 */            
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 이미지가 영역을 꽉 채우면서 비율 유지 */        
+      object-position: center;      
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    .nav {
+      display: none;
+    }
   }
 }
 </style>
