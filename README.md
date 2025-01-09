@@ -210,6 +210,13 @@ actions : ...mapActions('모듈', {'액션1', '액션2'})
 
 state, getters는 computed에, mutations와 actions는 methods에 등록
 
+# Router
+RouterView : 페이지가 출력되는 영역 컴포넌트  
+RouterLink : 페이지 이동을 위한 링크 컴포넌트 (a태그 대체)  
+
+$route : fullPath, paranms등 현재 페이지의 정보 조회를 위한 객체  
+$router : push 등 메소드등이 들어있어 페이지 이동 등 동작을 실행   
+
 # 후기
 08. Search - 버튼 구현에서 API날리고 응답 오는 부분까지 확인함.
 디버깅 설정 추가
