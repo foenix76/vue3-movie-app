@@ -6,6 +6,10 @@ import NotFound from './NotFound.vue'
 
 export default createRouter({
     history: createWebHashHistory(),
+    // scrollBehavior 적용하지 않아도 상단으로 스크롤 됨
+    scrollBehavior() {
+        return { top: 0 }
+    },
     routes: [
         {
             path: '/',

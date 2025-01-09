@@ -1,12 +1,14 @@
 import axios from 'axios'
 import _uniqBy from 'lodash/uniqBy'
 
+const _DEFAULT_SEARH_MESSAGE = 'Search for the movie title!'
+
 export default {
   // namespaced는 module로서 사용할 수 있다는 의미
   namespaced: true,
   state: () => ({
     movies: [],
-    message: 'Search for the movie title!',
+    message: _DEFAULT_SEARH_MESSAGE,
     loading: false,
     theMovie: {}
   }),
@@ -21,6 +23,8 @@ export default {
     },
     resetMovies(state) {
       state.movies = [];
+      state.message = _DEFAULT_SEARH_MESSAGE
+      state.loading = false
     }
   },
   // 비동기로 동작함에 주의
