@@ -218,7 +218,10 @@ $route : fullPath, paranms등 현재 페이지의 정보 조회를 위한 객체
 $router : push 등 메소드등이 들어있어 페이지 이동 등 동작을 실행   
 
 # netlify github hook trigger test
-우왕굳!
+github과 연동하여 소스 푸시만으로 트리거되어 빌드되어 편리.  
+그런데 빌드하고보니 인풋폼의 보더가 다 날라갔네?  
+원인 찾느라 한참을 삽질했는데 "bootstrap": "^5.0.0-beta3"이 5.3.3으로 업데이트 된 것이 문제였던 것으로 보임.  
+다시 롤백해서 해결했으나 아무리 조사해봐도 명확한 이유는 모르겠고 5.3으로 올라가면서 form관련된 내용이 변경된게 원인인 것 같은데 두 버전의 _form-control.scss까지 열어서 비교해봐도 보더 관련된 내용(border: $input-border-width solid $input-border-color;)도 비슷하게 들어있고 아무래도 글로벌 scss 변수나 css변수가 변했을 가능성이 있을 것 같음.  
 
 # 후기
 08. Search - 버튼 구현에서 API날리고 응답 오는 부분까지 확인함.
