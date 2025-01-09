@@ -34,7 +34,7 @@ export default {
         },
         {
           name: 'Movie',
-          href: '/movie/:id',
+          href: '/movie/tt10753786',
           path: /^\/movie/
         },
         {
