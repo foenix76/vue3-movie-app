@@ -8,6 +8,7 @@ const path = require('path')
 const HtmlPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   mode: 'development',
@@ -82,7 +83,8 @@ module.exports = {
         { from: 'public' } // public 폴더의 모든 내용을 dist에 복사        
       ]
     }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new Dotenv()
   ],
   devtool: 'source-map',
   // eval-source-map: 빠른 빌드 속도와 적절한 디버깅 지원 제공. - 현재 셋팅에서는 webpack-basic 하위에 BP를 찍을 수 없는 형태로 나옴
@@ -91,7 +93,7 @@ module.exports = {
   // 개발 서버 옵션
   devServer: {
     host: 'localhost',
-    port: 8080,
+    port: 8079,
     hot: true
   }
 }

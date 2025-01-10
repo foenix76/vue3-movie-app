@@ -297,6 +297,9 @@ npm i cross-env
 # 또는package.json, netlify.toml등의 파일에서 npm을 호출하는 부분에 넣어주면 OK
 npm cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack-dev-server --mode development
 ```
+#  로컬 및 서버의 환경변수 구성
+npm i -D dotenv-webpack
+
 
 # 후기
 45. 로컬 및 서버의 환경 변수 구성
