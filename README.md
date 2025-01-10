@@ -266,7 +266,10 @@ dev모드에서 /images를 참조하는 경로가 자동으로 /public/images로
 - 배포 모드에서는 빌드 후 `public` 폴더의 내용이 `dist`로 복사되며, 빌드된 결과물(`dist/images`)을 통해 서빙됩니다.
 
 따라서, 개발 모드에서는 **`public/images`** 폴더에서 바로 이미지를 참조할 수 있기 때문에 `/images` 경로로 잘 나오는 것입니다.
-(테스트 해보니 img src="/public/images", img src="/images" 둘 다 잘 연결됨. 다만 운영빌드에서 img src="/public/images"빌드가 먹을지는 테스트 해보자)
+
+### dev모드에서 img src="/public/images", img src="/images" 둘 다 잘 연결됨. 다만 운영빌드에서는...
+운영빌드시 img src="/public/images"경로는 먹지 않는다. 위의 작동원리를 읽어보면 당연한건데 혹시 몰라 테스트 해보니 역시나 안되니 주의!
+
 # 후기
 41. SPA 개요~ 이후 단위테스트, E2E, Nuxt 남은 상태
 

@@ -47,7 +47,7 @@
               :title="name"
               class="rating">
               <img
-                :src="`/public/images/ratings/${name}.png`"
+                :src="`/images/ratings/${name}.png`"
                 :alt="name" />
               <span>{{ score }}</span>
             </div>
