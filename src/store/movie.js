@@ -71,7 +71,7 @@ export default {
             })
           }
         }        
-      } catch (message) {
+      } catch ({ message }) {
         commit('updateState', {
           movies: [],
           message
@@ -112,25 +112,8 @@ export default {
 // promise객체를 사용할 때 async, await을 사용할 수 있으면 편리
 // 사용할 수 없다면 .then(), catch() 사용. then안에서 다음 실행할 펑션을 return시키면 
 
-const OMDB_API_KEY = 'cb61e2fe' // 7035c60c
-function _fetchMovie(payload) {  
-  const { title, type, year, page, id } = payload
-  const url = id
-  ? `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`
-  : `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
-  
-  return new Promise((resolve, reject) => {
-    axios.get(url)
-      .then(res => {
-        // {"Response":"False","Error":"Incorrect IMDb ID."}
-        if (res.data.Error) {
-          reject(res.data.Error)
-        }
-        resolve(res)
-      }).catch(err => {
-        reject(err.message)
-      })
-  })
+async function _fetchMovie(payload) {  
+  return await axios.post('.netlify/functions/movie', payload)
 }
 
 // 외부 컴포넌트에서는 스토어의 액션을 디스패치로 호출하고 스토어의 액션은 뮤테이션을 호출하여 데이터를 바꾼다.

@@ -275,9 +275,32 @@ dev모드에서 /images를 참조하는 경로가 자동으로 /public/images로
 장점 : 더 적게 요청하고 더 빠른 랜더링으로 사용자 경험 향상, 컴포넌트 단위 개발로 재사용성 및 생산성 향상, 백과 프론트 분업 용이
 단점 : 느린 최초 로드, SEO 어려움, 소스 노출
 
+# netlify로 API 구현 로직 이동
+로컬에서도 개발이 가능하도록 netlify-cli패키지 설치  
+설정파일인 netlify.toml를 규격에 맞게 설정하고 functions안에 _fetchMovie함수를 이동시켜 API KEY를 은폐하여 보안성 확보.  
+(어차피 키가 public repository인 git에 들어있어 소용없지만 실무에서는 개발key를 expire시키고 저장소를 private로 관리하거나 인프라팀에서 적합한 솔루션 등 가이드해줌)
+
+# 그동안 미뤄오던 NODE_OPTIONS 관련 환경변수 오류 해결하다
+openssl의 버전 문제로 환경변수에 NODE_OPTIONS --openssl-legacy-provider를 설정했다.  
+그런데 vscode의 터미널(파워쉘)에서는 NODE_OPTIONS환경변수를 가져오지 못하는 이상한 증상이 있어 매번 스크립트를 한번 실행하여 환경변수를 셋팅하고 실행했다.  
+vscode의 내장 터미널이 아닌 파워쉘이나 일반 cmd창에서는 해당 변수가 잘 조회되는데 이상하게 vscode내장쉘만 실행하면 NODE_OPTIONS변수가 날아가니 귀신이 곡할 노릇 ㅋㅋ  
+이게 좀 웃기는게 NODE_OPTIONS2나 NODE_OPTIONS3등의 다른 이름으로 설정하면 잘 가져와지는데 NODE_OPTIONS만의 뭔가 특이점이 있는 것 같은데 결국 정확한 원인은 찾지 못해서 회피하기로 결정함.  
+
+netlify연동을 하려니 npm이 한번 더 실행되어 기존 스크립트 방식을 못 쓰게 됬고(그동안 귀찮기도 했고) 구글링하다보니 react프로젝트에도 비슷한 케이스가 있는데 옵션의 인자 자체를 webpack빌드시 인자로 넘겨주면 된다고 하는데서 힌트를 얻어 아래와 같이 해결하였다.  
+
+cross-env라는 패키지를 설치하고 cross-env NODE_OPTIONS='--OPTION'형식으로 npm실행시에 인자를 주면 된다.  
+```bash
+# cross-env 설치
+npm i cross-env
+
+# 아래와 같이 빌드
+# 또는package.json, netlify.toml등의 파일에서 npm을 호출하는 부분에 넣어주면 OK
+npm cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack-dev-server --mode development
+```
 
 # 후기
-41. SPA 개요~ 이후 단위테스트, E2E, Nuxt 남은 상태
+45. 로컬 및 서버의 환경 변수 구성
+단위테스트, E2E, Nuxt 남은 상태
 
 # Vue3 템플릿 with Webpack
 

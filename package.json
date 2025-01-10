@@ -8,8 +8,10 @@
     "last 2 versions"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --mode development --host 127.0.0.1",
-    "build": "webpack --mode production",
+    "dev:webpack": "cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack-dev-server --mode development",    
+    "dev": "cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack-dev-server --mode development",
+    "dev:netlify": "netlify dev",
+    "build": "cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack --mode production",
     "lint": "eslint --fix --ext .js,.vue"
   },
   "keywords": [],
@@ -29,6 +31,7 @@
     "eslint-plugin-vue": "^7.8.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
+    "netlify-cli": "^18.0.0",
     "postcss": "^8.2.8",
     "postcss-loader": "^5.2.0",
     "sass": "^1.32.8",
@@ -43,6 +46,7 @@
   "dependencies": {
     "axios": "^1.7.9",
     "bootstrap": "^5.0.0-beta3",
+    "cross-env": "^7.0.3",
     "lodash": "^4.17.21",
     "vue": "^3.0.7",
     "vue-router": "^4.5.0",
