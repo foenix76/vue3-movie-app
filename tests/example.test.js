@@ -1,4 +1,19 @@
-//import { double, asyncFn} from './example'
+import { mount } from '@vue/test-utils'
+import Example from './Example.vue'
+
+test('메세지를 변경합니다', async () => {
+  const wrapper = mount(Example)
+  expect(wrapper.vm.msg).toBe('Hello Vue test utils!')
+  expect(wrapper.find('div').text()).toBe('Hello Vue test utils!')
+  // 값이 변경되어 적용 될 때 까지 기다려야 해서 await 사용
+  await wrapper.setData({
+    msg: 'Bye World!' 
+  })
+  expect(wrapper.find('div').text()).toBe('Bye World!')
+})
+
+/*
+import { double, asyncFn} from './example'
 import * as example from './example'
 import axios from 'axios'
 
@@ -20,7 +35,6 @@ describe('그룹1', () => {
   })
 })
 
-/*
 // 모의함수 개념
 describe('그룹1', () => {
   test('모의 함수 테스트', async () => {
