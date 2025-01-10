@@ -270,6 +270,12 @@ dev모드에서 /images를 참조하는 경로가 자동으로 /public/images로
 ### dev모드에서 img src="/public/images", img src="/images" 둘 다 잘 연결됨. 다만 운영빌드에서는...
 운영빌드시 img src="/public/images"경로는 먹지 않는다. 위의 작동원리를 읽어보면 당연한건데 혹시 몰라 테스트 해보니 역시나 안되니 주의!
 
+# SPA 개요
+전통 웹과 다르게 전체 페이지 로드 없이 부분적 갱신 가능한 Single Page Application = SPA  
+장점 : 더 적게 요청하고 더 빠른 랜더링으로 사용자 경험 향상, 컴포넌트 단위 개발로 재사용성 및 생산성 향상, 백과 프론트 분업 용이
+단점 : 느린 최초 로드, SEO 어려움, 소스 노출
+
+
 # 후기
 41. SPA 개요~ 이후 단위테스트, E2E, Nuxt 남은 상태
 

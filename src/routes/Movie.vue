@@ -76,8 +76,7 @@
 
 <script>
 import Loader from '~/components/Loader.vue';
-import { mapState } from 'vuex';
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -109,7 +108,7 @@ export default {
     ...mapActions('movie', [
       'searchMovieWithId'
     ]),
-    requestDiffSizeImage(url, size = 1000) {
+    requestDiffSizeImage(url, size = 550) {
       if (!url || url === 'N/A') {
         this.imageLoading = false
         return '' // 이미지 없을 시 undefined 대신 빈 문자열 지정
@@ -209,7 +208,7 @@ export default {
         display: flex;
         .rating {
           display: flex;
-          align-items: cemter;
+          align-items: center;
           margin-right: 32px;
           img {
             height: 30px;
