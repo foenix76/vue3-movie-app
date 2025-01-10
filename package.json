@@ -8,7 +8,7 @@
     "last 2 versions"
   ],
   "scripts": {
-    "dev:webpack": "cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack-dev-server --mode development",
+    "dev:webpack": "webpack-dev-server --mode development",
     "dev": "netlify dev",
     "build": "webpack --mode production",
     "lint": "eslint --fix --ext .js,.vue",
