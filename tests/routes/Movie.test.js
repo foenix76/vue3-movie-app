@@ -34,6 +34,7 @@ describe('routes/Movie.vue', () => {
     const url = 'https://google.com/sample_image_SX300.jpg'
     // 동작
     // 확인
+
     expect(wrapper.vm.requestDiffSizeImage(url)).toContain('SX550')
     expect(wrapper.vm.requestDiffSizeImage(url, 900)).toContain('SX900')
   })
