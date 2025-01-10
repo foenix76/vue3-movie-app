@@ -78,7 +78,8 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: 'static' }
+        { from: 'static'},
+        { from: 'public' } // public 폴더의 모든 내용을 dist에 복사        
       ]
     }),
     new VueLoaderPlugin()
