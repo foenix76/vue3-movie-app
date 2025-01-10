@@ -1,4 +1,36 @@
-import { double, asyncFn } from './example'
+//import { double, asyncFn} from './example'
+import * as example from './example'
+import axios from 'axios'
+
+describe('그룹1', () => {
+  test('모의 함수 테스트', async () => {
+    //const title = await example.fetchMovieTitle();
+    // 통신 장애상황 만들고 jest.fn()으로 처리
+    axios.get = jest.fn(() =>
+      new Promise((resolve) => {
+        resolve({
+          data: {
+            Title: 'Frozen ii'
+          }
+        })
+      })  
+    )
+    const title = await example.fetchMovieTitle();
+    expect(title).toBe('Frozen ii')
+  })
+})
+
+/*
+// 모의함수 개념
+describe('그룹1', () => {
+  test('모의 함수 테스트', async () => {
+    jest.spyOn(example, 'asyncFn')
+    .mockResolvedValue('done')
+    const res = await example.asyncFn()
+    expect(res).toBe('done');
+  }, 7000)
+})
+
 
 describe('그룹1', () => {
 
@@ -89,3 +121,4 @@ describe('그룹3', () => {
     })  
   })
 })
+*/

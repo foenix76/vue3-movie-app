@@ -451,16 +451,37 @@ describe('그룹1', () => {
   })
 ```
 테스트는 항상 실패하는 값을 먼저 작성해주고 실패하는지 확인 후 통과하는 값으로 수정한다.
-
 비동기 테스트시에는 done을 활용하는 방법과 Promise의 리턴을 직접 받도록 return을 사용하는 방법, resolves브릿지를 쓰는 방법 등이 있다.  
-
 또한 테스트 함수는 비동기시 5초까지만 기다리도록 되어 있으며 그 이상의 시간이 필요할 경우 3번째 인자로 밀리세컨드를 넘겨줘야 한다.
 
+# 모의함수
+다음과 같이 axios호출조차 모의테스트 가능 (API서버의 네트워크 상황과 테스트의 분리가 가능)  
+실제로 네트워크를 끊고 테스트해도 패스하는 것을 알 수 있다.
+```js
+  test('모의 함수 테스트', async () => {
+    axios.get = jest.fn(() =>
+      new Promise((resolve) => {
+        resolve({
+          data: {
+            Title: 'Frozen ii'
+          }
+        })
+      })  
+    )
+    const title = await example.fetchMovieTitle();
+    expect(title).toBe('Frozen ii')
+  })
+```
 
+# 아놔 이게 끝이 아니네.. 추가적인 오류 수정
+jest에서 사용할 테스트펑션에서 axios를 import해오는 구문에서 오류 발생  
+axios버전이 1.7.9여서 ESM(ECMAScript Module)을 사용하는데 jest는 CommonJS환경에 맞춰져 있어 jest.config.mjs에서 transform등의 별도 설정을 해줘야 함. 그냥 axios를 0.21.1로 낮춰서 해결  
 
-
-
-
+또한 OMDB_API_KEY를 process.env에서 읽어와야 하는데 그것도 못 읽어와서 다음 두줄 추가로 해결함
+```js
+import dotenv from 'dotenv'
+dotenv.config();
+```
 
 # 후기
 45. 로컬 및 서버의 환경 변수 구성
