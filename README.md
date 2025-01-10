@@ -490,8 +490,9 @@ selenium이랑 아주 흡사. 그런데 더 편리한데다 headless모드에서
 favicon이 갱신이 안되길래 이것저것 만져보다 하루정도 netlify빌드가 안되고 있다는걸 깨닫고 빌드 로그를 확인해보니 cross-env NODE_OPTIONS='--openssl-legacy-provider' 추가 부분이 의심이 가서 제거해봐도 동일한 증상이었다.  
 이후 eslint-plugin-cypress 버전이 문제라는걸 알게 됬고 ^4.1.0 제거 후 2.11.2로 재설치하니 해결되었다.
 
-# 후기
-Ch 7. Nuxt만 남은 상태
+# SSR을 위한 NUXT
+Ch 7. Nuxt는 vue2버전의 프로젝트를 별도로 받아서 진행해야 함  
+강의 진행시점에 아직 vue3를 지원하는 nuxt3가 나오지 않아서 인 것으로 보임
 
 # Vue3 템플릿 with Webpack
 
