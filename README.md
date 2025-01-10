@@ -488,7 +488,6 @@ selenium이랑 아주 흡사. 그런데 더 편리한데다 headless모드에서
 
 # 후기
 Ch 7. Nuxt만 남은 상태
-git commit --amend 후 복구 테스트
 
 # Vue3 템플릿 with Webpack
 
