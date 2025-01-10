@@ -483,9 +483,12 @@ import dotenv from 'dotenv'
 dotenv.config();
 ```
 
+# cypress를 이용한 E2E 테스트
+selenium이랑 아주 흡사. 그런데 더 편리한데다 headless모드에서 동영상으로 녹화까지 해준다. 신기하다!
+
 # 후기
-45. 로컬 및 서버의 환경 변수 구성
-단위테스트, E2E, Nuxt 남은 상태
+Ch 7. Nuxt만 남은 상태
+git commit --amend 후 복구 테스트
 
 # Vue3 템플릿 with Webpack
 
