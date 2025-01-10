@@ -298,7 +298,168 @@ npm i cross-env
 npm cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack-dev-server --mode development
 ```
 #  로컬 및 서버의 환경변수 구성
-npm i -D dotenv-webpack
+아.. 이거 항상 궁금했는데 속시원!
+```bash
+# dotenv-webpack 설치  
+npm i -D dotenv-webpack  
+
+#이후 webpack.config.js에 임포트
+const Dotenv = require('dotenv-webpack')
+# plugin에 다음을 추가
+new Dotenv()
+
+# 프로젝트 루트에 .env파일에 key=value형식으로 환경설정값 입력하고 .gitignore애 추가하여 업로드 되지 않도록 함
+# 서버에는 환경변수로 입력하거나 관리콘솔에서 별도 메뉴 제공
+
+# 이후 js파일에서는 process.env를 프로퍼티명으로 구조분해로 바로 가져와서 사용하면 됨
+const { OMDB_API_KEY } = process.env
+```
+# 테스트 도구
+유닛테스트 : Jest + Vue Test Utils  
+E2E Test : cypress.io  
+
+# 유닛 테스트시 오류
+```bash
+# 유닛 테스트 관련 의존성 설치
+npm i -D jest @vue/test-utils vue-jest@next babel-jest
+
+# npm run test:unit
+npm error
+ FAIL  tests/example.test.js
+  ● Test suite failed to run
+
+    [BABEL] C:\dev_study\study2401\vue3-movie-app\tests\example.test.js: Requires Babel "^7.22.0 || >8.0.0-alpha <8.0.0-beta", but was loaded with "7.13.10". If you are sure you have a compatible version of @babel/core, it is likely that something in your build process is loading the wrong version. Inspect the stack trace of this error to look for the first entry that doesn't mention "@babel/core" or "babel-core" to see what is calling Babel. (While processing: "C:\\dev_study\\study2401\\vue3-movie-app\\node_modules\\@babel\\plugin-syntax-import-attributes\\lib\\index.js")
+```
+vue-jest를 ^5.0.0-alpha.10에서 강사님과 동일한 ^5.0.0-alpha.7으로 맞춰봤으나 해결 안됨
+
+에러메세지의 내용대로 "@babel/core": "^7.26.0"로 업데이트 하니 정상 실행됨. (그런데 이상한게 원본쪽 소스에서는 7.13으로도 잘 됬었음)  
+아무래도 찝찝해서 npm uninstall @babel/core 후 node_modules폴더 날리고 package.json, package-lock.json에 "@babel/core": "^7.13.10" 넣고 npm i로 모듈을 재설치하니 이상없이 돌아감.  
+
+드디어 이 망할놈의 패키지 버전 시스템에 대해서 이해가 갔음.  
+프로젝트는 개발당시의 의존성 패키지 환경을 고정하기 위해 package-lock.json파일에 기록하는 것이며 npm u로 패키지를 제거했다 다시 추가할 시 package-lock.json파일에서도 삭제되었다가 추가되므로 마이너 버전이 올라가버리는 경우가 있다는 것을 알게 됨  
+
+앞으로는 구할 수만 있다면 기존 프로젝트의 package-lock.json을 먼저 셋팅하고 진행해야 이런 일이 없을 것으로 보임  
+
+일단 위 에러메세지는 npm i -D @babel/core@^7.13.10로 설치한 Babel관련 패키지들이 실제로는 7.26으로 올라가면서 그 중 하나인 @babel/preset-env와 @babel/
+@babel/plugin-syntax-import-attributes라는 구문 분석 패키지가 문제를 일으킨 것으로 보인다.
+
+```
+webpack-basic@1.0.0 C:\dev_study\study2401\vue3-movie-app
+└─┬ babel-jest@26.6.3
+  └─┬ babel-preset-jest@26.6.2
+    └─┬ babel-preset-current-node-syntax@1.1.0
+      └── @babel/plugin-syntax-import-attributes@7.26.0
+
+
+# 문제가 된 패키지의 버전을 낮춰줬다.
+npm i -D babel-preset-current-node-syntax@1.0.1
+
+# 조회해봄. 사라졌다! 이후부터 테스트 jest 테스트 성공!
+npm i -D babel-preset-current-node-syntax@1.0.1
+webpack-basic@1.0.0 C:\dev_study\study2401\vue3-movie-app
+└── (empty)
+
+# 이래도 안되면 node_modules디렉토리 삭제 후 npm i 해본다
+```
+
+# Jest Globals
+```js
+// describe : 테스트 그룹
+describe('그룹1', () => {
+
+  beforeAll(() => {
+    console.log('시작하기전 한번');
+  });
+  afterAll(() => {
+    console.log('끝나기전 한번');
+  });
+
+  beforeEach(() => {
+    console.log('매 테스트 전 한번');
+  });
+  afterEach(() => {
+    console.log('매 테스트 후 한번');
+  });  
+
+  test('첫 테스트', () => {
+    console.log('첫 테스트');
+    expect(123).toBe(123)
+  })
+
+  test('인수가 숫자 데이터입니다', () => {
+    console.log('두번째 테스트');
+    expect(double(3)).toBe(6)
+    expect(double(5)).toBe(10)
+    expect(double()).toBe(0)
+  })
+})
+```
+결과
+```text
+  console.log
+    시작하기전 한번
+
+      at Object.<anonymous> (tests/example.test.js:3:1)
+
+  console.log
+    매 테스트 전 한번
+
+      at Object.<anonymous> (tests/example.test.js:13:13)
+
+  console.log
+    첫 테스트
+
+      at Object.<anonymous> (tests/example.test.js:19:13)
+
+  console.log
+    매 테스트 후 한번
+
+      at Object.<anonymous> (tests/example.test.js:16:13)
+
+  console.log
+    매 테스트 전 한번
+
+      at Object.<anonymous> (tests/example.test.js:13:13)
+
+  console.log
+    두번째 테스트
+
+      at Object.<anonymous> (tests/example.test.js:23:13)
+
+  console.log
+    매 테스트 후 한번
+
+      at Object.<anonymous> (tests/example.test.js:16:13)
+
+  console.log
+    끝나기전 한번
+
+      at Object.<anonymous> (tests/example.test.js:9:11)
+```
+원시형 데이터 비교시에는 toBe  
+객체데이터와 배열데이터 비교시에는 toBe 말고 toEqual 사용  
+
+비동기 테스트  
+```js
+  // 로그 안찍힘. 리턴하기전에 테스트가 종료됨
+  // Jest는 비동기 코드를 올바르게 처리하려면 테스트 함수가 비동기임을 명시적으로 알려줘야 합니다.
+  test('비동기 함수 테스트 안찍힘', () => {  
+    asyncFn().then(result => {
+      expect(result).toBe('done')
+      console.log('비동기 함수 테스트 안찍힘');  
+    })  
+  })
+```
+테스트는 항상 실패하는 값을 먼저 작성해주고 실패하는지 확인 후 통과하는 값으로 수정한다.
+
+비동기 테스트시에는 done을 활용하는 방법과 Promise의 리턴을 직접 받도록 return을 사용하는 방법, resolves브릿지를 쓰는 방법 등이 있다.  
+
+또한 테스트 함수는 비동기시 5초까지만 기다리도록 되어 있으며 그 이상의 시간이 필요할 경우 3번째 인자로 밀리세컨드를 넘겨줘야 한다.
+
+
+
+
+
 
 
 # 후기
