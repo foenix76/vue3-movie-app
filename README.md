@@ -223,6 +223,50 @@ github과 연동하여 소스 푸시만으로 트리거되어 빌드되어 편�
 원인 찾느라 한참을 삽질했는데 "bootstrap": "^5.0.0-beta3"이 5.3.3으로 업데이트 된 것이 문제였던 것으로 보임.  
 다시 롤백해서 해결했으나 아무리 조사해봐도 명확한 이유는 모르겠고 5.3으로 올라가면서 form관련된 내용이 변경된게 원인인 것 같은데 두 버전의 _form-control.scss까지 열어서 비교해봐도 보더 관련된 내용(border: $input-border-width solid $input-border-color;)도 비슷하게 들어있고 아무래도 글로벌 scss 변수나 css변수가 변했을 가능성이 있을 것 같음.  
 
+# netlify업로드 후 평점 부분의 이미지가 안나오는 증상 해결 과정
+예제와 다르게 평가사의 이미지를 인터넷 상에서 직접 참조하지 않고 public/images폴더에 이미지를 넣고 img src=/public/images경로로 참고하여 사용중이었음.  
+그런데 netlify빌드 후 이미지가 안나와서 이것 저것 살펴보니 번들링 과정에서 public폴더가 dist로 복제되지 않고 있다는 것을 알게되어 다음과 같이 public폴더를 추가.  
+```js
+    new CopyPlugin({
+      patterns: [
+        { from: 'static'},
+        { from: 'public' } // public 폴더의 모든 내용을 dist에 복사        
+      ]
+    })
+```
+그런데 webpack에서 copy-webpack-plugin으로 public/images의 이미지들을 dist/images로 복사하면 dev모드에서는 이미지가 잘 나오려나?  
+이게 궁금해서 img src=/images경로로 수정 후 dev모드로 서버를 띄우니 이미지가 잘 나옴.  
+dev모드라 운영빌드의 dist/images를 바라보는게 아닐텐데도 어떻게 이미지가 잘 나오는건지 궁금해서 chatgpt에게 물어봄.  
+dev모드에서 /images를 참조하는 경로가 자동으로 /public/images로 연결되는거야?
+
+### **개발 모드에서 `/images` 경로 참조**
+
+개발 모드에서는 Vue CLI의 **개발 서버**(webpack-dev-server)가 요청을 처리하는 방식에 관련이 있습니다. 이 서버는 **`public` 폴더**를 특별하게 취급합니다.
+
+- **`public` 폴더**의 내용은 빌드 과정과 관계없이 **개발 서버에서 직접 제공**됩니다. 즉, `public/images`에 있는 파일들은 개발 서버에서 `/images` 경로로 자동으로 제공됩니다.
+
+### **왜 `/images`가 잘 나오는지 설명**
+1. **개발 서버**: Vue CLI는 `public` 폴더의 내용을 직접 처리하여, `/images`와 같은 경로로 접근할 수 있게 합니다. 즉, 개발 모드에서는 **`public/images`** 폴더의 파일이 **`/images`** 경로로 접근 가능합니다.
+   - 예를 들어, `public/images/logo.png` 파일이 있으면, `http://localhost:8080/images/logo.png` 경로로 접근할 수 있습니다.
+   
+2. **`dist` 폴더와의 차이점**: `dist` 폴더는 실제 빌드 후에 생성되며, 배포용으로 사용됩니다. 이 때 `public` 폴더의 파일들은 `dist`로 복사됩니다. 하지만 개발 서버에서는 빌드된 파일을 사용하지 않고, **실제 `public` 폴더의 파일들을 직접 서빙**합니다.
+
+3. **webpack-dev-server**: 개발 모드에서는 `webpack-dev-server`가 `public` 폴더 내 파일들을 서빙하기 때문에, `/images` 경로로 접근할 수 있는 것입니다. 즉, `dist/images` 폴더의 내용이 아닌 **실제 `public/images` 폴더의 내용**을 가져옵니다.
+
+---
+
+### **개발 모드와 빌드 모드 차이**
+- **개발 모드**: `public` 폴더의 파일들이 직접 서빙됩니다. 예를 들어 `public/images/logo.png`는 `http://localhost:8080/images/logo.png`로 접근 가능.
+- **빌드 모드**: `public` 폴더의 내용은 `dist` 폴더로 복사되며, `dist/images/logo.png`가 `http://your-deployed-site.com/images/logo.png`로 제공됩니다.
+
+---
+
+### **정리**
+- 개발 모드에서는 `public/images` 폴더의 내용이 `webpack-dev-server`에 의해 **자동으로 제공**됩니다.
+- 배포 모드에서는 빌드 후 `public` 폴더의 내용이 `dist`로 복사되며, 빌드된 결과물(`dist/images`)을 통해 서빙됩니다.
+
+따라서, 개발 모드에서는 **`public/images`** 폴더에서 바로 이미지를 참조할 수 있기 때문에 `/images` 경로로 잘 나오는 것입니다.
+(테스트 해보니 img src="/public/images", img src="/images" 둘 다 잘 연결됨. 다만 운영빌드에서 img src="/public/images"빌드가 먹을지는 테스트 해보자)
 # 후기
 41. SPA 개요~ 이후 단위테스트, E2E, Nuxt 남은 상태
 
